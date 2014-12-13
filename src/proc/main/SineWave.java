@@ -1,0 +1,90 @@
+package proc.main;
+import processing.core.*;
+
+public class SineWave extends PApplet {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int xspacing = 40;   // How far apart should each horizontal location be spaced
+//	int xspacing = 16;   // How far apart should each horizontal location be spaced
+	int w;              // Width of entire wave
+
+	double theta = 0.0;  // Start angle at 0
+	double amplitude = 75.0;  // Height of wave
+	double period = 500.0;  // How many pixels before the wave repeats
+	double dx;  // Value for incrementing X, a function of period and xspacing
+	float[] yvalues;  // Using an array to store height values for the wave
+
+	int col = this.color(200, 100, 100);
+
+	int count = 0;
+	
+	
+	boolean f_reverse = false;
+	
+	public void setup() {
+	  size(1000, 360);
+//	  size(640, 360);
+	  w = width+16;
+	  dx = (TWO_PI / period) * xspacing;
+	  yvalues = new float[w/xspacing];
+	  
+	  background(0);
+	  
+	}
+
+	public void draw() {
+	  background(0);
+	  
+	  calcWave();
+	  renderWave();
+	}
+
+	void calcWave() {
+	  // Increment theta (try different values for 'angular velocity' here
+	  theta += 0.02;
+
+	  // For every x value, calculate a y value with sine function
+	  double x = theta;
+	  for (int i = 0; i < yvalues.length; i++) {
+	    yvalues[i] = (float) (sin((float) x)*amplitude);
+	    x+=dx;
+	  }
+	}
+
+	void renderWave() {
+	  noStroke();
+	  
+	   if (count > 255) {
+//		count = 0;
+		   f_reverse = true;
+		   
+		} else if (count < 0) {
+			
+			f_reverse = false;
+			
+		}
+
+	   if (f_reverse == true) {
+		   
+		   count --;
+		   
+	   } else {
+		   
+		   count ++;
+		   
+	   }
+	   
+	   
+	  fill(this.color(255, 0, count));
+	  
+//	  fill(200);
+	  // A simple way to draw the wave with an ellipse at each location
+	  for (int x = 0; x < yvalues.length; x++) {
+	    ellipse(x*xspacing, height/2+yvalues[x], 16, 16);
+	  }
+	}
+	
+}
