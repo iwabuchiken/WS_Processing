@@ -18,6 +18,8 @@ public class SineWave extends PApplet {
 	float[] yvalues;  // Using an array to store height values for the wave
 	
 	float[] yvalues_Cos;  // Using an array to store height values for the wave
+	
+	float[] yvalues_Aggregate;  // Using an array to store height values for the wave
 
 	int col = this.color(200, 100, 100);
 
@@ -25,19 +27,23 @@ public class SineWave extends PApplet {
 	
 	
 	boolean f_reverse = false;
+
+	double alpha = 0.0;
 	
 	public void setup() {
-	  size(1000, 360);
+		size(1000, 360);
 //	  size(640, 360);
-	  w = width+16;
-	  dx = (TWO_PI / period) * xspacing;
-	  yvalues = new float[w/xspacing];
-	  
-	  yvalues_Cos = new float[w/xspacing];
-	  
-	  background(0);
+		w = width+16;
+		dx = (TWO_PI / period) * xspacing;
+		yvalues = new float[w/xspacing];
+		
+		yvalues_Cos = new float[w/xspacing];
+		
+		yvalues_Aggregate = new float[w/xspacing];
+		
+		background(0);
 
-	  ////////////////////////////////
+		////////////////////////////////
 
 	// setup
 
@@ -45,76 +51,110 @@ public class SineWave extends PApplet {
 //	  calcWave();
 //	  
 //	  this.setup_View();
-	  
+		
 	}
 
 	public void draw() {
+//		background(color(0, 0, count));
 	  background(0);
-	  
-	  calcWave();
-	  renderWave();
-	  
-	  setup_View();
-	  
+		
+		calcWave();
+		renderWave();
+		
+		setup_View();
+		
 	}
 
 	void calcWave() {
-	  // Increment theta (try different values for 'angular velocity' here
-	  theta += 0.02;
+		// Increment theta (try different values for 'angular velocity' here
+		theta += 0.02;
 
-	  // For every x value, calculate a y value with sine function
-	  double x = theta;
-	  for (int i = 0; i < yvalues.length; i++) {
+		// For every x value, calculate a y value with sine function
+		double x = theta;
+		for (int i = 0; i < yvalues.length; i++) {
 //	    yvalues[i] = (float) (Math.sqrt(x) * this.amplitude);
-	    yvalues[i] = (float) (sin((float) x)*amplitude);
-	    
-	    yvalues_Cos[i] = (float) (cos((float) x)*amplitude);
-	    
-	    x+=dx;
-	  }
+			yvalues[i] = (float) (sin((float) x)*amplitude);
+			
+			yvalues_Cos[i] = (float) (sin((float) ((float) 2 * x - Math.PI))*amplitude);
+//	    yvalues_Cos[i] = (float) (cos((float) x)*amplitude);
+			
+			yvalues_Aggregate[i] = yvalues[i] + yvalues_Cos[i];
+			
+			x+=dx;
+		}
 	}
 
-	void renderWave() {
-	  noStroke();
-	  
-	   if (count > 255) {
+	void 
+	renderWave() {
+		noStroke();
+		
+			if (count > 255) {
 //		count = 0;
-		   f_reverse = true;
-		   
+			f_reverse = true;
+			
 		} else if (count < 0) {
 			
 			f_reverse = false;
 			
 		}
 
-	   if (f_reverse == true) {
-		   
-		   count --;
-		   
-	   } else {
-		   
-		   count ++;
-		   
-	   }
-	   
-	   
+			if (f_reverse == true) {
+			
+			count --;
+			
+			} else {
+			
+			count ++;
+			
+			}
+			
+			
 //	  fill(this.color(255, count, count));
-	  
+		
 //	  fill(200);
-	  // A simple way to draw the wave with an ellipse at each location
-	  for (int x = 0; x < yvalues.length; x++) {
-		  
-		  fill(this.color(255, count, count));
-		  
+		// A simple way to draw the wave with an ellipse at each location
+		for (int x = 0; x < yvalues.length; x++) {
+			
+			fill(this.color(255, count, count));
+			
 //	    ellipse(x*xspacing, height/2 - yvalues[x], 5, 5);
-	    ellipse(x*xspacing, height/2+yvalues[x], 5, 5);
-	    
-	    fill(this.color(255 - count, 255, 255 - count));
-	    
-	    ellipse(x*xspacing, height/2+yvalues_Cos[x], 5, 5);
-	    
-	  }
-	}
+			ellipse(x*xspacing, height/2+yvalues[x], 5, 5);
+			
+			fill(this.color(255 - count, 255, 255 - count));
+			
+			ellipse(x*xspacing, height/2+yvalues_Cos[x], 5, 5);
+			
+			fill(this.color(255, 0, 0));
+			
+			ellipse(x*xspacing, height/2+yvalues_Aggregate[x], 5, 5);
+			
+		}
+		
+		
+		////////////////////////////////
+	
+		// circle
+	
+		////////////////////////////////
+		if (alpha > 2 * Math.PI) {
+			
+			alpha = 0.0;
+			
+		}
+		
+		fill(this.color(0, 0, 255));
+		
+		ellipse(
+			width/2 + 100 * cos((float) alpha), 
+			height/2 + 100 * sin((float) alpha), 
+			20, 20);
+		
+		alpha += Math.PI / (60 + 100 * random(3));
+//		alpha += Math.PI / (180 + 60 * random(3));
+//		alpha += Math.PI / 180;
+//		alpha += Math.PI / 360;
+		
+	}//renderWave
 
 	public void setup_View() {
 		
