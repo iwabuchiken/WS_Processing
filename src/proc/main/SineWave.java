@@ -16,6 +16,8 @@ public class SineWave extends PApplet {
 	double period = 500.0;  // How many pixels before the wave repeats
 	double dx;  // Value for incrementing X, a function of period and xspacing
 	float[] yvalues;  // Using an array to store height values for the wave
+	
+	float[] yvalues_Cos;  // Using an array to store height values for the wave
 
 	int col = this.color(200, 100, 100);
 
@@ -31,6 +33,8 @@ public class SineWave extends PApplet {
 	  dx = (TWO_PI / period) * xspacing;
 	  yvalues = new float[w/xspacing];
 	  
+	  yvalues_Cos = new float[w/xspacing];
+	  
 	  background(0);
 
 	  ////////////////////////////////
@@ -38,16 +42,16 @@ public class SineWave extends PApplet {
 	// setup
 
 	////////////////////////////////
-	  calcWave();
-	  
-	  this.setup_View();
+//	  calcWave();
+//	  
+//	  this.setup_View();
 	  
 	}
 
 	public void draw() {
 	  background(0);
 	  
-//	  calcWave();
+	  calcWave();
 	  renderWave();
 	  
 	  setup_View();
@@ -61,8 +65,11 @@ public class SineWave extends PApplet {
 	  // For every x value, calculate a y value with sine function
 	  double x = theta;
 	  for (int i = 0; i < yvalues.length; i++) {
-	    yvalues[i] = (float) (Math.sqrt(x) * this.amplitude);
-//	    yvalues[i] = (float) (sin((float) x)*amplitude);
+//	    yvalues[i] = (float) (Math.sqrt(x) * this.amplitude);
+	    yvalues[i] = (float) (sin((float) x)*amplitude);
+	    
+	    yvalues_Cos[i] = (float) (cos((float) x)*amplitude);
+	    
 	    x+=dx;
 	  }
 	}
@@ -91,14 +98,20 @@ public class SineWave extends PApplet {
 	   }
 	   
 	   
-	  fill(this.color(255, 0, count));
+//	  fill(this.color(255, count, count));
 	  
 //	  fill(200);
 	  // A simple way to draw the wave with an ellipse at each location
 	  for (int x = 0; x < yvalues.length; x++) {
 		  
-	    ellipse(x*xspacing, height/2 - yvalues[x], 5, 5);
-//	    ellipse(x*xspacing, height/2+yvalues[x], 5, 5);
+		  fill(this.color(255, count, count));
+		  
+//	    ellipse(x*xspacing, height/2 - yvalues[x], 5, 5);
+	    ellipse(x*xspacing, height/2+yvalues[x], 5, 5);
+	    
+	    fill(this.color(255 - count, 255, 255 - count));
+	    
+	    ellipse(x*xspacing, height/2+yvalues_Cos[x], 5, 5);
 	    
 	  }
 	}
@@ -108,6 +121,10 @@ public class SineWave extends PApplet {
 		stroke(this.color(0, 255, 0));
 		
 		line(0, height/2, width, height/2);
+		
+		stroke(this.color(0, 0, 255));
+		
+		line(width/2, 0, width/2, height);
 		
 	}
 }
