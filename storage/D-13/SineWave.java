@@ -7,7 +7,7 @@ public class SineWave extends PApplet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int xspacing = 10;   // How far apart should each horizontal location be spaced
+	int xspacing = 40;   // How far apart should each horizontal location be spaced
 //	int xspacing = 16;   // How far apart should each horizontal location be spaced
 	int w;              // Width of entire wave
 
@@ -32,26 +32,14 @@ public class SineWave extends PApplet {
 	  yvalues = new float[w/xspacing];
 	  
 	  background(0);
-
-	  ////////////////////////////////
-
-	// setup
-
-	////////////////////////////////
-	  calcWave();
-	  
-	  this.setup_View();
 	  
 	}
 
 	public void draw() {
 	  background(0);
 	  
-//	  calcWave();
+	  calcWave();
 	  renderWave();
-	  
-	  setup_View();
-	  
 	}
 
 	void calcWave() {
@@ -61,8 +49,7 @@ public class SineWave extends PApplet {
 	  // For every x value, calculate a y value with sine function
 	  double x = theta;
 	  for (int i = 0; i < yvalues.length; i++) {
-	    yvalues[i] = (float) (Math.sqrt(x) * this.amplitude);
-//	    yvalues[i] = (float) (sin((float) x)*amplitude);
+	    yvalues[i] = (float) (sin((float) x)*amplitude);
 	    x+=dx;
 	  }
 	}
@@ -96,18 +83,8 @@ public class SineWave extends PApplet {
 //	  fill(200);
 	  // A simple way to draw the wave with an ellipse at each location
 	  for (int x = 0; x < yvalues.length; x++) {
-		  
-	    ellipse(x*xspacing, height/2 - yvalues[x], 5, 5);
-//	    ellipse(x*xspacing, height/2+yvalues[x], 5, 5);
-	    
+	    ellipse(x*xspacing, height/2+yvalues[x], 16, 16);
 	  }
 	}
-
-	public void setup_View() {
-		
-		stroke(this.color(0, 255, 0));
-		
-		line(0, height/2, width, height/2);
-		
-	}
+	
 }
