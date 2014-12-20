@@ -19,7 +19,9 @@ public class SineCurve_3 extends PApplet {
 	// lines
 	float[] yvals;
 	
-	int start_X, end_X, len_yvals, range, tick_X, sleep_time;
+	int start_X, end_X, len_yvals, range, tick_X, sleep_time,
+			padding_X = 50;
+//	int start_X, end_X, len_yvals, range, tick_X, sleep_time;
 //	int start_X, end_X, len_yvals, range, xspacing, sleep_time;
 	
 	int disp_X = 1000, disp_Y = 800;
@@ -131,8 +133,10 @@ public class SineCurve_3 extends PApplet {
 		// coordinates
 
 		////////////////////////////////
-		start_X = 10;
-		end_X = width - 10;
+		start_X = this.padding_X;
+		end_X = width - this.padding_X;
+//		start_X = 10;
+//		end_X = width - 10;
 		
 		tick_X = 3;
 		
