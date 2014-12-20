@@ -2,6 +2,12 @@ package proc.main;
 import processing.core.*;
 
 public class SineCurve_3 extends PApplet {
+
+	/**
+	 * tick_Theta = Math.PI / n		=> n dots in the half of a cycle
+	 * 
+	 * 
+	 */
 	
 	/**
 	 * 
@@ -20,7 +26,7 @@ public class SineCurve_3 extends PApplet {
 	float[] yvals;
 	
 	int start_X, end_X, len_yvals, range, tick_X, sleep_time,
-			padding_X = 50;
+			padding_X = 100, ellipse_R = 3, pi_Div = 72;
 //	int start_X, end_X, len_yvals, range, tick_X, sleep_time;
 //	int start_X, end_X, len_yvals, range, xspacing, sleep_time;
 	
@@ -138,6 +144,7 @@ public class SineCurve_3 extends PApplet {
 //		start_X = 10;
 //		end_X = width - 10;
 		
+//		tick_X = (int) (Math.PI / 360);
 		tick_X = 3;
 		
 		this.range = end_X - start_X;
@@ -159,7 +166,10 @@ public class SineCurve_3 extends PApplet {
 		
 		sleep_time = 100;
 		
-		tick_Theta = 0.1;
+		tick_Theta = Math.PI / this.pi_Div;
+//		tick_Theta = Math.PI / 24;
+//		tick_Theta = Math.PI / 360;
+//		tick_Theta = 0.1;
 		
 	}//init_Vars
 
@@ -291,7 +301,8 @@ public class SineCurve_3 extends PApplet {
 			p_X = start_X + tick_X * i;
 			p_Y = (int) (height / 2 - this.yvals[i]);
 			
-			ellipse(p_X, p_Y, 5, 5);
+			ellipse(p_X, p_Y, this.ellipse_R, this.ellipse_R);
+//			ellipse(p_X, p_Y, 5, 5);
 //			ellipse(x * xspacing, height/2 - yvals[x], 5, 5);
 			
 		}
