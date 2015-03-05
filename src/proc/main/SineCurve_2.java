@@ -1,4 +1,6 @@
 package proc.main;
+import java.util.Locale;
+
 import processing.core.*;
 
 public class SineCurve_2 extends PApplet {
@@ -21,11 +23,22 @@ public class SineCurve_2 extends PApplet {
 
 	// lines
 	float[] yvals;
+	float[] yvals_2;
+	float[] yvals_3;
+	float[] yvals_4;
+	float[] yvals_5;
+	float[] yvals_sum;
 	
 	int start_X, end_X, len_yvals, range, xspacing, sleep_time;
 	
 	double amplitude, tick_X, phase, freq;
-	
+
+	float sin_value;
+	float sin_value_2;	// freq = 2
+	float sin_value_3;	// freq = 1/2
+	float sin_value_4;	// 
+	float sin_value_5;	// 
+
 	////////////////////////////////
 
 	// funcs
@@ -97,6 +110,16 @@ public class SineCurve_2 extends PApplet {
 		background(white);
 //		background(0);
 
+		///////////////////////////////////
+		//
+		// lines
+		//
+		///////////////////////////////////
+		color(this.red);
+
+		stroke(10);
+		
+		line(0, height/2, width, height/2);
 
 	}
 
@@ -133,7 +156,8 @@ public class SineCurve_2 extends PApplet {
 		// coordinates
 
 		////////////////////////////////
-		tick_X = 0.05;
+		tick_X = 0.07;
+//		tick_X = 0.1;
 //		tick_X = 0.1;
 //		tick_X = 3;
 		
@@ -143,9 +167,15 @@ public class SineCurve_2 extends PApplet {
 		range = (int) ((end_X - start_X) / tick_X);
 		
 		
-		len_yvals = (int)(range * tick_X);
+		len_yvals = 2000;
+//		len_yvals = (int)(range * tick_X);
 		
 		yvals = new float[len_yvals];
+		yvals_2 = new float[len_yvals];
+		yvals_3 = new float[len_yvals];
+		yvals_4 = new float[len_yvals];
+		yvals_5 = new float[len_yvals];
+		yvals_sum = new float[len_yvals];
 	
 		////////////////////////////////
 
@@ -158,9 +188,12 @@ public class SineCurve_2 extends PApplet {
 		
 		phase = 0;
 		
-		freq = 1;
+		freq = 2;
+//		freq = 8;
+//		freq = 10;
 		
-		sleep_time = 100;
+		sleep_time = 1;
+//		sleep_time = 100;
 		
 	}//init_Vars
 
@@ -283,15 +316,26 @@ public class SineCurve_2 extends PApplet {
 	void calc_Line() {
 		
 		double x = 0;
-		float sin_value;
+//		float sin_value;
+//		float sin_value_2;	// freq = 2
+//		float sin_value_3;	// freq = 1/2
 		
 		for (int i = 0; i < yvals.length; i++) {
 			
 			sin_value = sin((float) (freq * x + phase));
+			sin_value_2 = sin((float) (freq * 2 * x + phase));
+			sin_value_3 = sin((float) (freq * ((float)1/2) * x + phase));
+			sin_value_4 = sin((float) (freq * x + Math.PI / 4));
+//			sin_value_3 = sin((float) (freq * (1/2) * x + phase));
 //			sin_value = sin((float) ((float) x + phase));
 //			sin_value = sin((float) x);
 			
 			yvals[i] = (float) (this.amplitude * sin_value);
+			yvals_2[i] = (float) (this.amplitude * sin_value_2);
+			yvals_3[i] = (float) (this.amplitude * sin_value_3);
+			yvals_4[i] = (float) (this.amplitude * sin_value_4);
+			
+			yvals_sum[i] = yvals[i] + yvals_2[i] + yvals_3[i] + yvals_4[i];
 //			yvals[i] = (float) (this.amplitude * (float) Math.sin(i));
 			
 			x += tick_X;
@@ -299,7 +343,7 @@ public class SineCurve_2 extends PApplet {
 			
 		}
 
-	}
+	}//void calc_Line()
 
 	void 
 	render_Wave() {
@@ -308,6 +352,7 @@ public class SineCurve_2 extends PApplet {
 		
 		for (int x = 0; x < yvals.length; x++) {
 			
+//			fill(black);
 			fill(red);
 			
 //			stroke(red);
@@ -315,11 +360,80 @@ public class SineCurve_2 extends PApplet {
 			
 //			ellipse(10 + x * xspacing, height/2 - yvals[x], 5, 5);
 			ellipse(x * xspacing, height/2 - yvals[x], 5, 5);
+			
+			fill(this.blue);
+			ellipse(x * xspacing, height/2 - yvals_2[x], 5, 5);
+			
+			fill(this.green);
+			ellipse(x * xspacing, height/2 - yvals_3[x], 5, 5);
+			
+//			//debug
+//			textSize(32);
+//			text("sum.length = " + yvals_sum.length
+//					+ " / x = " + x
+//					, 50, 50);
+
+//			String msg = "x = " + x;
+//			String msg = String.format(
+//						"x = %d / sum.length = %d (%s)", 
+//						x, yvals_sum.length,
+//						(x > yvals_sum.length / 2)
+//						);
+//			System.out.println(msg);
+			
+			// sum
+			if (x > yvals_sum.length / 2) {
+//				if (x == yvals_sum.length / 2) {
+				
+//				String msg = String.format(
+//						Locale.JAPAN,
+//						"x = %d --> larger; fill is red", x
+//						);
+//				System.out.println(msg);
+//				
+//				fill(this.red);
+//				ellipse(x * xspacing, height/2 - yvals_sum[x], 5, 5);
+				
+			} else if (x <= yvals_sum.length / 2) {//if (x = yvals_sum.length / 2)
+//			} else {//if (x = yvals_sum.length / 2)
+				
+//				String msg = String.format(
+//						Locale.JAPAN,
+//						"x = %d --> smaller; fill is blue", x
+//						);
+//				System.out.println(msg);
+				
+//				fill(this.blue);
+				fill(this.black);
+				ellipse(x * xspacing, height/2 - yvals_sum[x], 5, 5);
+				
+			}//if (x = yvals_sum.length / 2)
+			
+//			fill(this.black);
+//			ellipse(x * xspacing, height/2 - yvals_sum[x], 5, 5);
+//			ellipse(x * xspacing, height/2 - yvals[x]/2, 5, 5);
 //			ellipse(x * tick_X, height/2 - yvals[x], 5, 5);
 //			ellipse(x * tick_X, height/2 - yvals[x], tick_X, tick_X);
 			
+//			String msg = String.format(
+//					Locale.JAPAN,
+//					"next x"
+//					);
+//			System.out.println(msg);
+			
 		}
 
+		stroke(10);
+		line(0, height/2, width, height/2);
+		line(width/2, 0, width/2, height);
+		
+		///////////////////////////////////
+		//
+		// text
+		//
+		///////////////////////////////////
+		textSize(32);
+		text("yes", 50, 50);
 		
 	}//renderWave
 
