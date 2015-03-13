@@ -1,9 +1,8 @@
 package proc.main;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import processing.core.*;
+import proc.utils.Methods;
+import processing.core.PApplet;
 
 public class PlotScatter extends PApplet {
 	
@@ -22,18 +21,30 @@ public class PlotScatter extends PApplet {
 	//REF color datatype http://forum.processing.org/two/discussion/2753/color-data-type-is-not-recognized-in-eclipse/p1 koogs January 31
 	private int blue, green, red, white, black, yellow;
 
-	// lines
-	List<Double> list_X;
-	List<Double> list_Y;
+	//REF https://docs.google.com/spreadsheets/d/1_9jHcRs-onRsSFT9cG1ep527LsbTo3XL9Fmwq_N_Lc8/edit#gid=607285292
+	private double[] days = {1.1, 0.4, 0.3, 0.2, 2.6, 12.5, 12.3, 13.3, 14.3, 7.9, 1.8, 0.9};
+	private double[] hours = {272.8, 251.4, 288.3, 273, 251.1, 207, 223.2, 229.4, 195, 244.9, 258, 254.2};
+
+	private double[] range_Days = {0, 16};
+//	private double[] range_Hours = {150, 301};
+	private double[] range_Hours = {150, 300};
+
+	int numOf_Histo = 4;
 	
-	double radian;
-	
-	double tick = Math.PI / 180;	//=> tick = 1 degree
-	
-	int spacing = 100;
-	int radius = 5;
-	int offset_X = width / 2;
-	int offset_Y = height / 2;
+	int[] histo = new int[4];
+
+	double[] starts = new double[4];
+	double[] ends = new double[4];
+
+	///////////////////////////////////
+	//
+	// render
+	//
+	///////////////////////////////////
+	int offset_X = 100;
+	int W = 100;
+//	int W = 50;
+//	int W = 200;
 	
 	////////////////////////////////
 
@@ -63,6 +74,13 @@ public class PlotScatter extends PApplet {
 		////////////////////////////////
 		init_Vars();
 		
+		///////////////////////////////////
+		//
+		// build: histo
+		//
+		///////////////////////////////////
+		this.build_Histo();
+		
 		////////////////////////////////
 
 		// setup
@@ -77,21 +95,58 @@ public class PlotScatter extends PApplet {
 		////////////////////////////////
 //		show_BasicVars();
 
-		////////////////////////////////
-
-		// calc
-
-		////////////////////////////////
-		this.calc_Line();
-		
+//		////////////////////////////////
+//
+//		// calc
+//
+//		////////////////////////////////
+//		this.calc_Line();
+//		
 		////////////////////////////////
 
 		// render
 
 		////////////////////////////////
-		this.render_Wave();
+		this.render_Pict();
 		
-	}
+	}//public void setup()
+
+	private void 
+	build_Histo() {
+		// TODO Auto-generated method stub
+		
+		for (int i = 0; i < this.hours.length; i++) {
+			
+			for (int j = 0; j < this.starts.length; j++) {
+				
+				if (this.hours[i] >= this.starts[j] 
+						&& this.hours[i] <= this.ends[j]) {
+					
+					this.histo[j] ++;
+							
+				}//if (this.hours[i] >= this.)
+				
+			}//for (int j = 0; j < this.starts.length; j++)
+			
+		}//for (int i = 0; i < this.hours.length; i++)
+
+		///////////////////////////////////
+		//
+		// report
+		//
+		///////////////////////////////////
+		for (int i = 0; i < this.histo.length; i++) {
+			
+			String msg;
+			msg = String.format(
+					Locale.JAPAN,
+					"histo[%d]=%d", i, this.histo[i]
+					);
+			System.out.println(msg);
+			
+		}
+		
+	}//build_Histo
 
 	private void init_Screen() {
 		// TODO Auto-generated method stub
@@ -146,20 +201,57 @@ public class PlotScatter extends PApplet {
 		// coordinates
 
 		////////////////////////////////
-	
+		double start = this.range_Hours[0];
+		double end;
+		
+//		double[] starts = new double[4];
+//		double[] ends = new double[4];
+		
+//		numOf_Histo = 5;
+		
+//		double diff_Hours = Methods.round((this.range_Hours[1] - this.range_Hours[0]) / 4, 3);
+		double diff_Hours = Methods.round(
+						(this.range_Hours[1] - this.range_Hours[0]) / numOf_Histo, 
+						1);
+//		double diff_Hours = Methods.round((this.range_Hours[1] - this.range_Hours[0]) / 4, 1);
+		
+//		starts[0] = start;
+//		ends[3] = this.range_Hours[1];
+		
+		String msg;
+		msg = String.format(
+				Locale.JAPAN,
+				"diff_Hours => %f", diff_Hours
+				);
+		System.out.println(msg);
+		
+		// index 1 ~ -2
+		int i = 0;
+		
+		for (i = 0; i < starts.length -1; i++) {
+			
+			starts[i]	= start + diff_Hours * i;
+			ends[i]		= starts[i] + diff_Hours - 0.1;
+			
+		}
+		
+		starts[i] = start + diff_Hours * i;
+		ends[i] = this.range_Hours[1];
+		
+//		String msg;
+		msg = String.format(
+				Locale.JAPAN,
+				"starts[0]=%f, ends[0]=%f / starts[3]=%f, ends[3]=%f",
+				starts[0], ends[0], starts[3], ends[3]
+				);
+		System.out.println(msg);
+		
 		
 		////////////////////////////////
 
 		// others
 
 		////////////////////////////////
-		this.list_X = new ArrayList<Double>();
-		this.list_Y = new ArrayList<Double>();
-		
-		this.radian = 0;
-		
-		this.offset_X = width / 2;
-		this.offset_Y = height / 2;
 		
 		sleep_time = 1;
 //		sleep_time = 100;
@@ -178,9 +270,9 @@ public class PlotScatter extends PApplet {
 		
 //		background(white);
 		
-		this.calc_Line();
-		
-		this.render_Wave();
+//		this.calc_Line();
+//		
+//		this.render_Wave();
 		
 		try {
 			
@@ -196,106 +288,56 @@ public class PlotScatter extends PApplet {
 
 	void calc_Line() {
 		
-		///////////////////////////////////
-		//
-		// new coordinates
-		//
-		///////////////////////////////////
-		this.list_X.add(Math.sin(radian));
-		this.list_Y.add(Math.cos(radian));
-
-		///////////////////////////////////
-		//
-		// update: radian
-		//
-		///////////////////////////////////
-		this.radian += this.tick;
 		
 	}//void calc_Line()
 
 	void 
-	render_Wave() {
+	render_Pict() {
 		
 		noStroke();
+		
+		///////////////////////////////////
+		//
+		// histogram
+		//
+		///////////////////////////////////
+		int tmp = 255 / this.starts.length;
+		
+		for (int i = 0; i < this.starts.length; i++) {
+			
+			fill((this.histo[i] * tmp), 255, 0);
+//			fill((i * tmp), 255, 0);
+			
+			rect(
+					(float)offset_X, 
+					(float)this.starts[i], 
+//					(float)this.starts[0] + this.offset_X * i, 
+					(float)W, 
+//					(float)offset_X + W, 
+					(float)(this.ends[i] - this.starts[i])
+//					(float)this.ends[0] + this.offset_X * i
+			);
+//			rect((float)offset_X, (float)this.starts[0], (float)offset_X + W, (float)this.ends[0]);
+			
+			String msg;
+			msg = String.format(
+					Locale.JAPAN,
+					"starts[%d]=%f, ends[%d]=%f", i, starts[i], i, ends[i]
+					);
+			System.out.println(msg);
+			
+			
+		}
+		
+//		fill(255, 255, 0);
+//		
+//		rect((float)offset_X, (float)this.starts[0], (float)offset_X + W, (float)this.ends[0]);
 		
 		///////////////////////////////////
 		//
 		// points
 		//
 		///////////////////////////////////
-		double tmp = 0;
-		
-		int col_R;
-		
-		for (int i = 0; i < this.list_X.size(); i++) {
-		
-//			fill(red);
-			
-			if(tmp > Math.PI / 4) tmp = 0;
-//			if(tmp > Math.PI / 2) tmp = 0;
-//			if(tmp > Math.PI) tmp = 0;
-//			if(tmp > Math.PI * 2) tmp = 0;
-//			if(tmp > 360) tmp = 0;
-			
-			tmp = tmp + this.tick;
-			
-			col_R = (int) (255 * (tmp / Math.PI * 4));
-//			col_R = (int) (255 * (tmp / Math.PI * 2));
-//			col_R = (int) (255 * (tmp / Math.PI));
-//			col_R = (int) (255 * (tmp / Math.PI / 2));
-//			col_R = (int) (255 * (tmp / Math.PI * 4));
-//			col_R = (int) (255 * (tmp / Math.PI * 2));
-//			if(tmp > 255) tmp = 0;
-			
-//			//debug
-//			String msg = String.format(
-//					Locale.JAPAN,
-//					"tmp=%f / col_R=%d / Math.PI=%f", tmp, col_R, Math.PI
-//					);
-//			System.out.println(msg);
-			
-			
-			fill(col_R, 255,0);
-//			fill(i,255,0);
-			
-			ellipse(
-				(float)(list_X.get(i) * this.spacing + this.offset_X), 
-				(float)(list_Y.get(i) * this.spacing + this.offset_Y),
-				(float)(this.radius), (float)this.radius);
-			
-//			tmp = (int) (this.tick * (tmp / (double) 255));
-//			tmp ++;
-			
-		}
-		
-		///////////////////////////////////
-		//
-		// reset screen
-		//
-		///////////////////////////////////
-//		String msg = String.format(
-//				Locale.JAPAN,
-//				"list_X => %d", this.list_X.size()
-//				);
-//		System.out.println(msg);
-		
-		
-		if (this.list_X.size() == 360) {
-//			if (this.list_X.size() == 90) {
-			
-//			background(white);
-			this.list_X.clear();
-			this.list_Y.clear();
-			
-//			msg = String.format(
-//					Locale.JAPAN,
-//					"cleared"
-//					);
-//			System.out.println(msg);
-			
-			background(this.white);
-			
-		}
 
 		stroke(10);
 		line(0, height/2, width, height/2);
