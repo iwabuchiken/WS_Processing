@@ -58,6 +58,8 @@ public class D_18_Rotate_V2 extends PApplet {
 	// vertexes
 	int x1, y1;
 	int x2, y2;
+	int x1_orig, y1_orig;
+	int x2_orig, y2_orig;
 	int x3, y3;
 	int x4, y4;
 
@@ -232,11 +234,29 @@ public class D_18_Rotate_V2 extends PApplet {
 		x2 = x2 - width/2;
 		y2 = y2 - height/2;
 		
-		x1 = this.rotate_X(x1, y1);
-		y1 = this.rotate_Y(y1, x1);
+//		String msg;
+//		msg = String.format(Locale.JAPAN, "[%s : %d] calc => x1", Thread
+//				.currentThread().getStackTrace()[1].getFileName(), Thread
+//				.currentThread().getStackTrace()[1].getLineNumber());
+//
+//		System.out.println(msg);
+//		
+//		x1 = this.rotate_X(x1, y1);
+//
+//		msg = String.format(Locale.JAPAN, "[%s : %d] calc => y1", Thread
+//				.currentThread().getStackTrace()[1].getFileName(), Thread
+//				.currentThread().getStackTrace()[1].getLineNumber());
+//		
+//		System.out.println(msg);
+//
+//		y1 = this.rotate_Y(y1, x1);
 				
-		x2 = this.rotate_X(x2, y2);
-		y2 = this.rotate_Y(y2, x2);
+		x2 = this.rotate_X(this.x2_orig - width/2, this.y2_orig - height/2);
+		y2 = this.rotate_Y(this.y2_orig - height/2, this.x2_orig - width/2);
+//		x2 = this.rotate_X(this.x2_orig, this.y2_orig);
+//		y2 = this.rotate_Y(this.y2_orig, this.x2_orig);
+//		x2 = this.rotate_X(x2, y2);
+//		y2 = this.rotate_Y(y2, x2);
 		
 		x1 = x1 + width/2;
 		y1 = y1 + height/2;
@@ -274,7 +294,18 @@ public class D_18_Rotate_V2 extends PApplet {
 	public int
 	rotate_X(double x, double y) {
 		
-		return (int) (x*Math.cos(this.th) + y*Math.sin(this.th));
+		double res = x*Math.cos(this.th) + y*Math.sin(this.th);
+		
+//		String msg;
+//		msg = String.format(Locale.JAPAN, "[%s : %d] x=%f, y=%f / res=%f", Thread
+//				.currentThread().getStackTrace()[1].getFileName(), Thread
+//				.currentThread().getStackTrace()[1].getLineNumber(), x, y, res);
+//
+//		System.out.println(msg);
+		
+		
+		return (int) res;
+//		return (int) (x*Math.cos(this.th) + y*Math.sin(this.th));
 		
 	}
 	
@@ -346,9 +377,21 @@ public class D_18_Rotate_V2 extends PApplet {
 		
 		x2 = width/2 + w;	y2 = height/2;
 
-		x3 = width/2 + w;	y3 = height/2 - h;
+//		x1 = 0;	y1 = 0;
+//		
+//		x2 = 0;	y2 = 0;
 		
-		x4 = width/2;		y4 = height/2 - h;
+		x1_orig = x1;		y1_orig = y1;
+		
+		x2_orig = x2;	y2_orig = y2;
+		
+//		x1_orig = width/2;		y1_orig = height/2;
+//		
+//		x2_orig = width/2 + w;	y2_orig = height/2;
+//		
+//		x3 = width/2 + w;	y3 = height/2 - h;
+//		
+//		x4 = width/2;		y4 = height/2 - h;
 		
 		////////////////////////////////
 
@@ -356,7 +399,8 @@ public class D_18_Rotate_V2 extends PApplet {
 
 		////////////////////////////////
 		
-		sleep_time = 50;
+		sleep_time = 1;
+//		sleep_time = 50;
 //		sleep_time = 1;
 //		sleep_time = 100;
 		
