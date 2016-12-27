@@ -8,3 +8,5 @@ bin/
 bin/*
 *.ja
 libs/*
+
+1#/*/*.png

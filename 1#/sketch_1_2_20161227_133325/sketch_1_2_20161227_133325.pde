@@ -1,18 +1,35 @@
 /*
   file:  sketch_1_1_20161227_114338.pde
   
-  created at: 2016/12/27 13:33:00
+  created at: 2016/12/27 13:33:46
 
 */
-
 import java.awt.Toolkit;
 
-//ref https://forum.processing.org/two/discussion/9877/how-to-use-enums
+/**********************************
+    constants
+**********************************/
 static final int TYPE_SERIAL      = 1;
 static final int TYPE_FORMATTED    = 2;
 
+static int STROKE    = 1;
+
+static final int  WINDOW_WIDTH    = 1000;
+static final int  WINDOW_HEIGHT    = 1000;
+
+static final String  fname_trunk  = "1_2";  
+static final String  fname_ext  = ".png";
+
+/**********************************
+    variables
+**********************************/
 color c = color(255, 204, 0);
 
+color c_STROKE = color(0,0,0);
+
+/**********************************
+    functions
+**********************************/
 void setup() {
   
   
@@ -20,7 +37,7 @@ void setup() {
   //ref https://github.com/processing/processing/wiki/Window-Size-and-Full-Screen
   surface.setResizable(true);
   
-  size(480, 120);
+  size(1000, 1000);
   
   // no stroke
   noStroke();
@@ -40,13 +57,30 @@ void draw() {
       
       //String fname = "1_1." + nf(second(),2) + ".png";
       
-      String fname = "1_1." + get_time_label__Now(TYPE_SERIAL) + ".png";
+      //String fname = "1_1." + get_time_label__Now(TYPE_SERIAL) + ".png";
+      String fname = fname_trunk + get_time_label__Now(TYPE_SERIAL) + fname_ext;
 
       saveFrame(fname);
       
       //ref https://forum.processing.org/one/topic/beep-sound.html
       Toolkit.getDefaultToolkit().beep();
       
+      
+    } else if(key == 'l') {
+      
+      if(STROKE == 1) {
+        
+        noStroke();
+        
+      } else {
+
+        stroke(c_STROKE);
+      
+      }
+      
+      // toggle the value
+      STROKE = STROKE * -1;
+ 
     }
     
   }
@@ -80,8 +114,10 @@ void draw() {
     
     fill(255);
   }
+  
   ellipse(mouseX, mouseY, 80, 80);
-}
+  
+}//void draw()
 
 /***************************************
   @original location: C:\WORKS_2\WS\WS_Processing\1#\sketch_1_1_20161227_114338\sketch_1_1_20161227_114338.pde
