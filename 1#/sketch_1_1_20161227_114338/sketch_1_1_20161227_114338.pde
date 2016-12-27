@@ -31,15 +31,23 @@ void draw() {
   
   if (mousePressed) {
     
-    // keys
-    if (keyPressed) {
+    if(mouseButton == LEFT) {
       
+      c = color(random(255), 0, 255);
+      
+    } else if(mouseButton == RIGHT) {
+      
+      c = color(255,0,random(255));
+      
+    } else {
+      
+      c = color(255,0,random(255));
       
     }
     
     //fill(0);
     
-    c = color(255,0,random(255));
+    //c = color(255,0,random(255));
     
     fill(c);
     
