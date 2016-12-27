@@ -4,6 +4,11 @@
 
 */
 
+import java.awt.Toolkit;
+
+static final int TYPE_SERIAL      = 1;
+static final int TYPE_FORMATTED    = 2;
+
 color c = color(255, 204, 0);
 
 void setup() {
@@ -31,9 +36,13 @@ void draw() {
       
     } else if(key == 's') {
       
-      String fname = "1_1." + nf(second(),2) + ".png";
+      //String fname = "1_1." + nf(second(),2) + ".png";
       
+      String fname = "1_1." + get_time_label__Now(TYPE_SERIAL) + ".png";
+
       saveFrame(fname);
+      
+      Toolkit.getDefaultToolkit().beep();
       
     }
     
@@ -70,3 +79,51 @@ void draw() {
   }
   ellipse(mouseX, mouseY, 80, 80);
 }
+
+/***************************************
+  @return
+  TYPE_SERIAL       => serial      20161227_131300
+  TYPE_FORMATTED    => formatted   2016/12/27 13:13:00
+***************************************/
+String get_time_label__Now(int type) {
+
+  String label;
+  
+  switch(type) {
+   
+    case 1:
+    
+      label = nf(year(),4) + nf(month(),2) + nf(day(),2)
+                
+                + "_"
+      
+                + nf(hour(),2) + nf(minute(),2) + nf(second(),2);
+    
+      break;
+    
+    case 2:
+    
+      label = nf(year(),4) + "/" + nf(month(),2) + "/" + nf(day(),2)
+                
+                + " "
+      
+                + nf(hour(),2)  + ":" + nf(minute(),2) + ":" + nf(second(),2);
+    
+      break;
+      
+    default:
+    
+      label = nf(year(),4) + nf(month(),2) + nf(day(),2)
+            
+            + "_"
+  
+            + nf(hour(),2) + nf(minute(),2) + nf(second(),2);
+    
+      break;
+
+  }
+  
+      // return
+      return label;
+     
+}//get_time_label__Now(int type)
