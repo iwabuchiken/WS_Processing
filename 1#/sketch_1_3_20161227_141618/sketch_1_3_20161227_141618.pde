@@ -1,8 +1,14 @@
 /*
-  file:  sketch_1_1_20161227_114338.pde
+  file:  sketch_1_3_20161227_141618.pde
   
   created at: 2016/12/27 13:33:46
-
+  
+  <steps>
+  1. copy/paster
+    from: previous file or, C:\WORKS_2\WS\WS_Processing\1#\sketch_1_1_20161227_114338\sketch_1_1_20161227_114338.pde
+  2. edit:
+    1) fname_trunk
+    
 */
 import java.awt.Toolkit;
 
@@ -14,113 +20,57 @@ static final int TYPE_FORMATTED    = 2;
 
 static int STROKE    = 1;
 
-static final int  WINDOW_WIDTH    = 1000;
-static final int  WINDOW_HEIGHT    = 1000;
-
-static final String  fname_trunk  = "1_2";  
+static final String  fname_trunk  = "1_3";  
 static final String  fname_ext  = ".png";
 
 /**********************************
     variables
 **********************************/
-color c = color(255, 204, 0);
+//color c = color(255, 204, 0);
 
 color c_STROKE = color(0,0,0);
 
 /**********************************
     functions
 **********************************/
+// Run this program only in the Java mode inside the IDE,
+// not on Processing.js (web mode)!!
+
+// To convert images to a movie you can use:
+// ffmpeg -i seq-%04d.tga -r 25 -threads 4 video.mp4
+
+int c = 255;
+
 void setup() {
-  
-  
-  //ref https://forum.processing.org/two/discussion/12179/processing-3-resizable
-  //ref https://github.com/processing/processing/wiki/Window-Size-and-Full-Screen
-  surface.setResizable(true);
-  
-  size(1000, 1000);
-  
-  // no stroke
+  size(640, 480);
+  background(0);
+  frameRate(25);
   noStroke();
-  
+  rectMode(CENTER);
+}
+void draw() {
+  fill(c, random(100));
+
+  float sz = random(200);
+
+  rect(random(width), random(height), sz, sz);
+
+  if(frameCount % 200 == 0) {
+    c = 255 - c; // 255 0 255 0 255 0 ..
+  }
+  saveFrame("frame-####.tif");
+
+  if(frameCount > 500) { // 20 seconds * 25 fps = 500
+    noLoop();
+  }
 }
 
-void draw() {
-  
-  if(keyPressed) {
-   
-    if(key == 'n') {
-     
-      //noLoop();
-      return;
-      
-    } else if(key == 's') {
-      
-      //String fname = "1_1." + nf(second(),2) + ".png";
-      
-      //String fname = "1_1." + get_time_label__Now(TYPE_SERIAL) + ".png";
-      String fname = fname_trunk + get_time_label__Now(TYPE_SERIAL) + fname_ext;
 
-      saveFrame(fname);
-      
-      //ref https://forum.processing.org/one/topic/beep-sound.html
-      Toolkit.getDefaultToolkit().beep();
-      
-      
-    } else if(key == 'l') {
-      
-      if(STROKE == 1) {
-        
-        noStroke();
-        
-      } else {
 
-        //ref https://forum.processing.org/one/topic/how-to-toggle-nostroke.html
-        stroke(c_STROKE);
-      
-      }
-      
-      // toggle the value
-      STROKE = STROKE * -1;
- 
-    }
-    
-  }
-  
-  if (mousePressed) {
-    
-    //ref https://www.processing.org/reference/mouseButton.html
-    if(mouseButton == LEFT) {
-      
-      c = color(random(255), 0, 255);
-      
-    } else if(mouseButton == RIGHT) {
-      
-      c = color(255,0,random(255));
-      
-    } else {
-      
-      c = color(255,0,random(255));
-      
-    }
-    
-    //fill(0);
-    
-    //c = color(255,0,random(255));
-    
-    fill(c);
-    
-    
-  } else {
-    
-    
-    fill(255);
-  }
-  
-  ellipse(mouseX, mouseY, 80, 80);
-  
-}//void draw()
 
 /***************************************
+  String get_time_label__Now(int type)
+  
   @original location: C:\WORKS_2\WS\WS_Processing\1#\sketch_1_1_20161227_114338\sketch_1_1_20161227_114338.pde
   @created-at: 2016/12/27 13:39:04
   @use variables:
