@@ -14,6 +14,10 @@ void setup() {
   surface.setResizable(true);
   
   size(480, 120);
+  
+  // no stroke
+  noStroke();
+  
 }
 
 void draw() {
@@ -25,12 +29,19 @@ void draw() {
       //noLoop();
       return;
       
+    } else if(key == 's') {
+      
+      String fname = "1_1." + nf(second(),2) + ".png";
+      
+      saveFrame(fname);
+      
     }
     
   }
   
   if (mousePressed) {
     
+    //ref https://www.processing.org/reference/mouseButton.html
     if(mouseButton == LEFT) {
       
       c = color(random(255), 0, 255);
