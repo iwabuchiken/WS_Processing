@@ -21,4 +21,8 @@ libs/*
 projects/*/*/*.png
 projects/*/*/*/*.tif
 
-
+----------------------------- #2016/12/29 14:55:25
+projects/*/*/*/*_data/
+projects/*/*/*/*.mp3
+projects/*/*/*/*.wmv
+projects/*/*/*/*.avi
