@@ -1,13 +1,9 @@
 /*
-  file:  sketch_1_3_20161227_141618.pde
+  file:  sketch_3_1_20161229_124619.pde
   
-  created at: 2016/12/27 13:33:46
+  created at: 2016/12/29 12:48:29
   
   <steps>
-  1. copy/paster
-    from: previous file or, C:\WORKS_2\WS\WS_Processing\1#\sketch_1_1_20161227_114338\sketch_1_1_20161227_114338.pde
-  2. edit:
-    1) fname_trunk
     
 */
 import java.awt.Toolkit;
@@ -30,6 +26,8 @@ static final String  fname_ext  = ".png";
 
 color c_STROKE = color(0,0,0);
 
+String fname_id;
+
 /**********************************
     functions
 **********************************/
@@ -41,24 +39,41 @@ color c_STROKE = color(0,0,0);
 
 int c = 255;
 
+color c_fill;
+
+/**********************************
+    constants
+**********************************/
 void setup() {
   size(640, 480);
   background(0);
   frameRate(25);
   noStroke();
   rectMode(CENTER);
+  
+  // id
+  fname_id = get_time_label__Now(TYPE_SERIAL);
+
 }
 void draw() {
-  fill(c, random(100));
+  
+  c_fill = color(random(255), random(255), random(255));
+  
+  //fill(c, random(100));
+  fill(c_fill);
+  
 
   float sz = random(200);
 
-  rect(random(width), random(height), sz, sz);
+  //rect(random(width), random(height), sz, sz);
+  ellipse(random(width), random(height), sz, sz);
 
   if(frameCount % 200 == 0) {
     c = 255 - c; // 255 0 255 0 255 0 ..
   }
-  saveFrame("frame-####.tif");
+  //saveFrame("frame-####.tif");
+  //saveFrame("frame" + "." + fname_id + "." + "####.tif");
+  saveFrame("images" + "/" + "frame" + "." + fname_id + "." + "####.tif");
 
   if(frameCount > 500) { // 20 seconds * 25 fps = 500
     noLoop();
