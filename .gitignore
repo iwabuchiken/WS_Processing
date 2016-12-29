@@ -18,3 +18,7 @@ libs/*
 */*/*/*.avi
 #1#/*/*.tif
 
+projects/*/*/*.png
+projects/*/*/*/*.tif
+
+
